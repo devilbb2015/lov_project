@@ -1,10 +1,14 @@
-const user = require("../../models/user");
-const jwtModule = require("../../modules/jwtModule");
-const statusCode = require("../../modules/statusCode");
-const code = require("../../modules/statusCode");
+const user = require("../../../models/user");
+const jwtModule = require("../../../modules/jwtModule");
+const code = require("../../../modules/statusCode");
 
 const authController = {
-  signUp: async (req, res) => {
+  readUser: (req, res) => {},
+  updateUser: (req, res) => {},
+  deleteUser: (req, res) => {},
+  readAllUser: (req, res) => {},
+
+  signUpUser: async (req, res) => {
     const { email, password, nickName } = req.body;
 
     try {
@@ -32,7 +36,7 @@ const authController = {
       });
     }
   },
-  signIn: async (req, res) => {
+  signInUser: async (req, res) => {
     const { email, password } = req.body;
     console.log(req.body);
 
@@ -48,18 +52,18 @@ const authController = {
         const token = jwtModule.create(payload);
         console.log(token);
 
-        res.status(statusCode.OK).json({
+        res.status(code.OK).json({
           message: "로그인 성공",
           accessToken: token,
         });
       } else {
-        res.status(statusCode.CONFLICT).json({
+        res.status(code.CONFLICT).json({
           message: "로그인 실패",
         });
       }
     } catch (err) {
       console.log(err);
-      res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+      res.status(code.INTERNAL_SERVER_ERROR).json({
         message: "DB 서버 에러",
       });
     }

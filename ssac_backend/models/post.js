@@ -1,5 +1,5 @@
-const { Schema, Mongoose } = require("mongoose");
-const Schema = Mongoose.Schema;
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const postSchema = new Schema({
   title: { type: String, required: true, default: null }, // 제목
@@ -8,11 +8,11 @@ const postSchema = new Schema({
   tags: { type: String, default: null }, // 태그 ##
   publishedDate: { type: Date, default: Date.now() }, // 가입일
   updatedDate: { type: Date, default: Date.now() }, // 수정일
-  writer: { type: Mongoose.Schema.Types.ObjectId, ref: "user" }, // 작성자
+  writer: { type: mongoose.Schema.Types.ObjectId, ref: "user" }, // 작성자
   comments: [
     {
       commentWriter: {
-        type: Mongoose.Schema.Types.comments,
+        type: mongoose.Schema.Types.ObjectId,
         defult: null,
         ref: "user",
       },
@@ -22,4 +22,4 @@ const postSchema = new Schema({
   ],
 });
 
-module.exports = Mongoose.model("post", postSchema);
+module.exports = mongoose.model("post", postSchema);
