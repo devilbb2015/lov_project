@@ -1,62 +1,38 @@
-const post = require("../../../models/post");
+const comment = require("../../../models/comment");
 const code = require("../../../modules/statusCode");
 
-const postController = {
-  readAllBoard: async (req, res) => {
+const commentController = {
+  readAllComment: async (req, res) => {
     try {
-      const result = await post
+      const result = await comment
         .find()
         .populate("writer", "nickName profileImage");
-      if (!result)
-        return res.status(code.BAD_REQUEST).json({
-          message: "데이터가 없습니다.",
-        });
-
+      if (!result) {
+        return res
+          .status(code.BAD_REQUEST)
+          .json({ message: "데이터가 없습니다." });
+      }
       res.status(code.OK).json({
-        message: "게시물 전체조회 성공",
+        message: "댓글 전체조회 성공",
         data: result,
       });
     } catch (error) {
+      console.error(error);
       res.status(code.INTERNAL_SERVER_ERROR).json({
         message: "조회 실패",
       });
-      console.log(error);
     }
   },
-  createBoard: async (req, res) => {
-    const userInfo = req.userInfo;
-    const { title, content, category, tags } = req.body;
-    const postModel = new post({
-      title,
-      content,
-      category,
-      tags,
-      publishedDate: Date.now(),
-      writer: userInfo._id,
-    });
-
+  readComment: async (req, res) => {
+    const { commentId } = req.params;
     try {
-      const result = await postModel.save();
-      res.status(code.OK).json({
-        message: "저장 성공",
-        data: result,
-      });
-    } catch (error) {
-      res.status(code.INTERNAL_SERVER_ERROR).json({
-        message: "DB 서버 에러",
-      });
-      console.log(error);
-    }
-  },
-  readBoard: async (req, res) => {
-    const { postId } = req.params;
-    try {
-      const result = await post.findById(postId);
+      const result = await comment.findById(commentId);
       if (!result) {
-        return res.status(code.BAD_REQUEST).json({
-          message: "데이터가 없습니다.",
-        });
+        return res
+          .status(code.NO_CONTENT)
+          .json({ message: "데이터가 없습니다." });
       }
+
       res.status(code.OK).json({
         message: "조회 성공",
         data: result,
@@ -65,20 +41,39 @@ const postController = {
       res.status(code.INTERNAL_SERVER_ERROR).json({
         message: "DB 서버 에러",
       });
-      console.log(error);
     }
   },
-  updateBoard: async (req, res) => {
+  createComment: async (req, res) => {
+    //토큰값 검증
     const userInfo = req.userInfo;
-    const { postId } = req.params;
-    const { title, content, category, tags } = req.body;
+    const { commentContent } = req.body;
+    const commentModel = new comment({
+      commentWriter: userInfo._id,
+      commentContent,
+      commentDate: Date.now(),
+    });
 
-    const ownResult = await post.checkAuth({
-      postId,
+    try {
+      const result = await commentModel.save();
+      res.status(code.OK).json({
+        message: "저장 성공",
+        data: result,
+      });
+    } catch (error) {
+      res.status(code.INTERNAL_SERVER_ERROR).json({
+        message: "DB 서버 에러",
+      });
+    }
+  },
+  updateComment: async (req, res) => {
+    const userInfo = req.userInfo;
+    const { commentId } = req.params;
+    const { commentContent } = req.body;
+
+    const ownResult = await comment.checkAuth({
+      commentId,
       writerId: userInfo._id,
     });
-    console.log(ownResult);
-
     if (ownResult === -1) {
       return res
         .status(code.FORBIDDEN)
@@ -90,37 +85,35 @@ const postController = {
     }
 
     try {
-      const result = await post.findByIdAndUpdate(
-        postId,
+      const result = await comment.findByIdAndUpdate(
+        commentId,
         {
-          title,
-          content,
-          category,
-          tags,
-          updatedDate: Date.now(),
-          writer: userInfo._id,
+          commentId: userInfo._id,
+          commentContent,
+          commentDate: Date.now(),
         },
         { new: true } // 업데이트 하고 난 후의 결과값 반환
       );
-      console.log(result);
       res.status(code.OK).json({
         message: "수정 완료",
         data: result,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(code.INTERNAL_SERVER_ERROR).json({
         message: "DB 서버 에러",
         error,
       });
     }
   },
-  deleteBoard: async (req, res) => {
+  deleteComment: async (req, res) => {
     const userInfo = req.userInfo;
-    const { postId } = req.params;
+    const { commentId } = req.params; // 댓글의 _id
 
-    const ownResult = await post.checkAuth({
-      postId,
+    // 일치하는 회원인지 아닌지 확인
+
+    const ownResult = await comment.checkAuth({
+      commentId,
       writerId: userInfo._id,
     });
     console.log(ownResult);
@@ -135,12 +128,11 @@ const postController = {
     }
 
     try {
-      await post.findByIdAndDelete(postId);
+      await comment.findByIdAndDelete(commentId);
       res.status(code.OK).json({
         message: "삭제 성공",
       });
     } catch (error) {
-      console.log(error);
       res.status(code.INTERNAL_SERVER_ERROR).json({
         message: "DB 서버 에러",
       });
@@ -148,4 +140,4 @@ const postController = {
   },
 };
 
-module.exports = postController;
+module.exports = commentController;

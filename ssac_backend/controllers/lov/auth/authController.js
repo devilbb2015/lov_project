@@ -3,10 +3,88 @@ const jwtModule = require("../../../modules/jwtModule");
 const code = require("../../../modules/statusCode");
 
 const authController = {
-  readUser: (req, res) => {},
-  updateUser: (req, res) => {},
-  deleteUser: (req, res) => {},
-  readAllUser: (req, res) => {},
+  readAllUser: async (req, res) => {
+    try {
+      const result = await user.find();
+      res.status(code.OK).json({
+        message: "유저 전체 조회 성공",
+        data: result,
+      });
+    } catch (error) {
+      res.status(code.INTERNAL_SERVER_ERROR).json({
+        message: "서버 에러",
+      });
+    }
+  },
+  readUser: (req, res) => {
+    //토큰 정보 가져오기(클라이언트에서 header에 토큰 담아서 넘겨주면 토큰 decode 후 email로 검색해서 같은 email 유저 정보가 담긴 토큰 반환)
+    const userInfo = req.userInfo;
+
+    //토큰 조회 후 같은 회원 정보가 존재할 때, 정보를 가져온다.
+    if (userInfo) {
+      res.status(code.OK).json({
+        message: "특정 유저 조회 성공",
+        data: userInfo,
+      });
+    } else {
+      res.status(code.BAD_REQUEST).json({
+        message: "특정 유저 조회 실패",
+      });
+    }
+  },
+  updateUser: async (req, res) => {
+    const userInfo = req.userInfo;
+    const profileImage = req.file;
+
+    try {
+      const { age, gender, degree, inoDate } = req.body;
+
+      const result = await user.findByIdAndUpdate(
+        userInfo._id,
+        {
+          age,
+          gender,
+          degree,
+          inoDate,
+          // profileImage: profileImage.location,
+          verified: true,
+        },
+        { new: true }
+      );
+      // 페이로드 생성
+      const payload = {
+        email: result.email,
+        verified: result.verified,
+      };
+      // 생성한 페이로드를 토큰 생성할 때 파라미터로 넘겨준다
+      const token = jwtModule.create(payload);
+      res.status(code.OK).json({
+        message: "수정 성공",
+        data: result,
+        accessToken: token,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(code.INTERNAL_SERVER_ERROR).json({
+        message: "수정 실패",
+        error,
+      });
+    }
+  },
+  deleteUser: async (req, res) => {
+    const userInfo = req.userInfo;
+    try {
+      await user.findByIdAndDelete(userInfo._id);
+      res.status(code.OK).json({
+        message: "삭제 성공",
+      });
+    } catch (error) {
+      res.status(code.INTERNAL_SERVER_ERROR).json({
+        message: "삭제 실패",
+        error,
+      });
+    }
+  },
 
   signUpUser: async (req, res) => {
     const { email, password, nickName } = req.body;
@@ -38,37 +116,78 @@ const authController = {
   },
   signInUser: async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.body);
-
     try {
-      const result = await user.findOne({ email, password });
+      //요청된 이메일을 DB에서 찾기
+      const result = await user.findOne({ email });
       if (result) {
-        const payload = {
-          email: result.email,
-          nickName: result.nickName,
-          verified: result.verified,
-        };
-
-        const token = jwtModule.create(payload);
-        console.log(token);
-        console.log(result._id);
-
-        res.status(code.OK).json({
-          message: "로그인 성공",
-          accessToken: token,
+        // 유저 정보 존재할 때 -> 암호화된 비밀번호 체크
+        result.comparePassword(password, (err, isMatch) => {
+          if (!isMatch) {
+            // 비밀번호 틀릴때
+            return res
+              .status(code.BAD_REQUEST)
+              .json({ message: "비밀번호가 틀렸습니다." });
+          }
+          //페이로드 생성
+          const payload = {
+            email: result.email,
+            verified: result.verified,
+          };
+          // 토큰 생성할 때 페이로드 넘겨주기
+          const token = jwtModule.create(payload);
+          // 쿠키에 토큰 저장, 리턴값도 토큰
+          res.status(code.OK).json({
+            message: "로그인 성공",
+            accessToken: token,
+          });
         });
       } else {
-        res.status(code.CONFLICT).json({
+        //로그인 실패 >> 유저 정보 존재하지 않음
+        res.status(code.NOT_FOUND).json({
           message: "로그인 실패",
         });
       }
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.error(error);
       res.status(code.INTERNAL_SERVER_ERROR).json({
         message: "DB 서버 에러",
       });
     }
   },
+
+  // sendEmail: async (req, res) => {
+  //   const { email } = req.body;
+  //   const smtpTransport = nodemailer.createTransport({
+  //     service: 'Gmail',
+  //     auth: {
+  //       user: nodemailerSecretkey.user,
+  //       pass: nodemailerSecretkey.password,
+  //     },
+  //     tls: {
+  //       rejectUnauthorized: false,
+  //     },
+  //   });
+  //   console.log(smtpTransport);
+  //   const mailOptions = {
+  //     from: nodemailerSecretkey.user,
+  //     to: email,
+  //     subject: '비밀번호 재설정',
+  //     text: '비밀번호 재설정',
+  //   };
+  //   console.log(mailOptions);
+  //   try {
+  //     await smtpTransport.sendMail(mailOptions);
+  //     smtpTransport.close();
+  //     res.status(code.OK).json({
+  //       message: '메일 발송 성공',
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(code.BAD_REQUEST).json({
+  //       message: '메일 발송 실패',
+  //     });
+  //   }
+  // },
 };
 
 module.exports = authController;

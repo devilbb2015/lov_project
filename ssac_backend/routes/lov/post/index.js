@@ -14,8 +14,8 @@ router.get("/:postId", postController.readBoard);
 // 게시물 작성
 router.post("/", authModule.loggedIn, postController.createBoard);
 // 게시물 수정
-router.put("/postId", authModule.loggedIn, postController.updateBoard);
+router.put("/:postId", authModule.loggedIn, postController.updateBoard);
 // 게시물 삭제
-router.delete("/postId", authModule.loggedIn, postController.deleteBoard);
+router.delete("/:postId", authModule.loggedIn, postController.deleteBoard);
 
 module.exports = router;

@@ -22,4 +22,22 @@ const postSchema = new Schema({
   ],
 });
 
+// 글작성자와 로그인유저 비교
+// this => model을 가르킴
+postSchema.statics.checkAuth = async function (params) {
+  const { postId, writerId } = params;
+  console.log(postId, writerId);
+  try {
+    const ownResult = await this.findOne({ _id: postId }); // 게시물의 _id
+    const ownId = ownResult.writer._id;
+    if (ownId.toString() !== writerId.toString()) {
+      return -1;
+    }
+    return 1;
+  } catch (error) {
+    console.error(error);
+    return -2;
+  }
+};
+
 module.exports = mongoose.model("post", postSchema);
