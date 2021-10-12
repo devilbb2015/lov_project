@@ -18,7 +18,7 @@ db.once("open", function () {
 });
 
 mongoose.connect(
-  `mongodb+srv://${dbInfo.hostName}:${dbInfo.dbPassword}@ssac.ym3fm.mongodb.net/${dbInfo.dbName}?retryWrites=true&w=majority`,
+  `mongodb+srv://${dbInfo.hostName}:${dbInfo.dbPassword}@clusterlov.yjkz0.mongodb.net/${dbInfo.dbName}?retryWrites=true&w=majority`,
   { useUnifiedTopology: true, useNewUrlParser: true }
 );
 
