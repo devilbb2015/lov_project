@@ -31,10 +31,36 @@ const GlobalStyles = createGlobalStyle`
     color: orange */
     font-style: italic;
   };
-
   strong {
     font-weight: bolder
   };
+  .toast {
+    color: #ffffff !important;
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 22px;
+    height: 30 px;
+    width: 50 rem;
+    padding: 1 rem;
+    min-height: 2 rem!important;
+    display: flex;
+    justify-content: center;
+    border-radius: 8px !important;
+    transform: translate(-50%, 10px);
+    border-radius: 1rem;
+    overflow: hidden;
+    opacity: 0;
+    z-index: 10000;
+  } 
+  .toast-info {
+    background-color: rgba(33, 33, 33, 0.8) !important;
+  }
+  .toast-warning {
+    background-color: rgba(242, 82, 24, 0.8) !important;
+  }
+  .toast-success {
+    background-color: rgba(51, 113, 246, 0.8) !important;
+  }
 `;
 
 export default GlobalStyles;

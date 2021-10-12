@@ -12,24 +12,32 @@ import AuthProvider from "./context/providers/AuthProvider";
 import { useContext } from "react";
 import AuthContext from "./context/AuthContext";
 import AddProfilePage from "./pages/AddProfilePage";
+import {
+  ToastsContainer,
+  ToastsStore,
+  ToastsContainerPosition,
+} from "react-toasts";
 
 function App() {
   // const dispatch = useDispatch();
   // const { isLoggedIn } = useSelector(({ user }) => ({
   //   isLoggedIn: user.isLoggedIn,
   // }));
+  // 가져와서 useState와 똑같이 활용
   const { authInfo, setAuthInfo } = useContext(AuthContext);
 
+  // 통신 진행 후 상태변경(토큰 유무에 따라)
   useEffect(() => {
+    ToastsStore.success("테스트");
+
     const token = localStorage.getItem("accessToken")
       ? localStorage.getItem("accessToken")
       : null;
-    console.log(token);
     async function getAccount() {
       if (token !== null) {
         client.defaults.headers.common["Authorization"] = `${token}`;
-        const response = await client.get("/api/auth/profile");
-        setAuthInfo({ isLoggedIn: true, userInfo: response.data.data });
+        const response = await client.get("/auth/profile");
+        setAuthInfo({ isLoggedIn: true, authInfo: response.data.data });
         console.log(response);
         try {
         } catch (error) {
@@ -52,6 +60,10 @@ function App() {
       {/* <Route component={RegisterPage} path="/register" /> */}
       {/* <Route component={WritePage} path="/write" /> */}
       {/* <Route component={PostPage} path="/@:username/:postId" /> */}
+      <ToastsContainer
+        position={ToastsContainerPosition.TOP_CENTER}
+        store={ToastsStore}
+      />
     </>
   );
 }

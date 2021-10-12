@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, useHistory } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { applyMiddleware, createStore } from "redux";
 import rootReducer, { rootSaga } from "./modules/index";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -19,9 +18,12 @@ const store = createStore(
 );
 
 sagaMiddleware.run(rootSaga);
-
+// history 객체 초기화 -> BrowserRouter에 적용
+// useHistory()와 비슷하지만 차이점은 useHistory()는 콤포넌트 레벨에서만 사용
+// index.js는 탑레벨이기 때문에, useHistory()를 쓰면 error
 export const history = createBrowserHistory();
-
+// Provider -> redux에 활용(지금 x)
+// AuthProvider 활용할 예정(context API)
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter history={history}>
@@ -34,8 +36,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

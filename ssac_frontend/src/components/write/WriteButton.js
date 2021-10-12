@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ButtonComponent from "../common/ButtonComponent";
 import palette from "../../libs/styles/palette";
 import { BsPlusLg } from "react-icons/bs";
+import { useHistory } from "react-router";
 
 const StyledButton = styled(ButtonComponent)`
   width: 4rem;
@@ -12,7 +13,6 @@ const StyledButton = styled(ButtonComponent)`
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-
   &:hover {
     background-color: ${palette.cyan[4]};
   }
@@ -24,9 +24,10 @@ const StyledIcon = styled(BsPlusLg)`
 `;
 
 function WriteButton() {
+  const history = useHistory();
   return (
     <StyledButton>
-      <StyledIcon />
+      <StyledIcon onClick={() => history.push("/write")} />
     </StyledButton>
   );
 }

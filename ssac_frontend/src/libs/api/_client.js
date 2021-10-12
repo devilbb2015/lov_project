@@ -3,7 +3,7 @@ import { history } from "../../index";
 
 const client = axios.create();
 
-client.defaults.baseURL = "http://localhost:3000/";
+client.defaults.baseURL = "http://localhost:3000/lov";
 
 client.interceptors.response.use(
   (response) => {
