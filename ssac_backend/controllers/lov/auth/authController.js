@@ -45,12 +45,13 @@ const authController = {
       if (result) {
         const payload = {
           email: result.email,
-          password: result.password,
+          nickName: result.nickName,
           verified: result.verified,
         };
 
         const token = jwtModule.create(payload);
         console.log(token);
+        console.log(result._id);
 
         res.status(code.OK).json({
           message: "로그인 성공",
