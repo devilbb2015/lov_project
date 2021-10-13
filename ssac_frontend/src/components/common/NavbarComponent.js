@@ -6,6 +6,7 @@ import MainLogo from "../../assets/global/logo.png";
 import ButtonComponent from "./ButtonComponent";
 import SearchBox from "./search/SearchBox";
 import ProfileAvatar from "../../assets/global/profile.png";
+import { useState } from "react";
 
 const NavbarWrap = styled.div`
   position: fixed;
@@ -105,7 +106,6 @@ function NavbarComponent({
   visible,
   onClickLogout,
 }) {
-  console.log("authInfo", authInfo);
   return (
     <>
       <NavbarWrap>
@@ -124,7 +124,7 @@ function NavbarComponent({
             <div className="right">
               <ProfileText>
                 <span style={{ fontWeight: "bolder" }}>
-                  {authInfo.authInfo.nickName}
+                  {authInfo.userInfo.nickName}
                 </span>{" "}
                 님 환영합니다
               </ProfileText>
