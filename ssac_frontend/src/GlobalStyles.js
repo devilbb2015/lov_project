@@ -21,10 +21,20 @@ const GlobalStyles = createGlobalStyle`
       font-weight: 400;
       font-style: normal;
   }
+  @font-face {
+    font-family: 'Y_Spotlight';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/Y_Spotlight.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
   html {
-    font-size: 10px;
-    font-family: Pretendard-Regular;
+    font-size: 16px;
     
+    -ms-user-select: none; 
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    /* user-select: none; */
   };
   em {
     /* font-weight: bolder;
@@ -34,32 +44,18 @@ const GlobalStyles = createGlobalStyle`
   strong {
     font-weight: bolder
   };
-  .toast {
-    color: #ffffff !important;
-    font-size: 1.4rem;
-    font-weight: 500;
-    line-height: 22px;
-    height: 30 px;
-    width: 50 rem;
-    padding: 1 rem;
-    min-height: 2 rem!important;
-    display: flex;
-    justify-content: center;
-    border-radius: 8px !important;
-    transform: translate(-50%, 10px);
-    border-radius: 1rem;
-    overflow: hidden;
-    opacity: 0;
-    z-index: 10000;
-  } 
+  *{
+    user-select: none;
+    font-family: Y_Spotlight;
+  }
   .toast-info {
-    background-color: rgba(33, 33, 33, 0.8) !important;
+    background-color: rgba(33,33,33,0.8) !important;
   }
   .toast-warning {
-    background-color: rgba(242, 82, 24, 0.8) !important;
+    background-color: rgba(242,82,24,0.8) !important;
   }
   .toast-success {
-    background-color: rgba(51, 113, 246, 0.8) !important;
+    background-color: rgba(51,113,246,0.8) !important;
   }
 `;
 

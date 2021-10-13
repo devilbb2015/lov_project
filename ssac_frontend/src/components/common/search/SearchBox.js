@@ -7,7 +7,8 @@ const NavSearchRoundBox = styled.div`
   padding: 0.1rem 0;
   display: flex;
   align-items: center;
-  border-radius: 4px;
+  border-radius: 10px;
+  margin-left: 10rem;
 `;
 
 const NavSearchInput = styled.input`

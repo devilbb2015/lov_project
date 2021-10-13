@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
+import { ToastsStore } from "react-toasts";
 import AuthForm from "../../components/auth/AuthForm";
 import AuthContext from "../../context/AuthContext";
 import client from "../../libs/api/_client";
 
 function SignInForm() {
   const history = useHistory();
-
+  // context API 아무때나 불러올 수 있다
   const { authInfo, setAuthInfo } = useContext(AuthContext);
 
   const [error, setError] = useState("");
@@ -18,40 +20,61 @@ function SignInForm() {
     nickName: "",
   });
 
-  const onChangeInput = (e) => {
-    const { name, value } = e.target;
-    console.log(value);
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
+  const onChagenInput = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+      setForm({
+        ...form,
+        [name]: value,
+      });
+    },
+    [form]
+  );
 
   const onClickSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await client.post(
-        "http://localhost:3000/api/auth/signin",
-        {
-          email: form.email,
-          password: form.password,
-        }
-      );
+      /* 
+      axios({
+        method: 'post",
+        url:''
+      }) -> 진행
+      client는 axios의 모듈화 (다른 형태)
+      client.메소드(url, 바디값) -> get은 첫번째
+      */
+      const response = await client.post("/auth/signin", {
+        email: form.email,
+        password: form.password,
+      });
       if (response.status === 200) {
         const accessToken = response.data.accessToken;
         localStorage.setItem("accessToken", accessToken);
 
+        /*
+          axios({
+            headers : {
+              authorization : token
+            }
+          })
+        */
+        //클라이언트의 모든 요청에 헤더에 토큰을 보내겠다. 토큰이 필요 없는 경우도 보내도 상관없다.
+        //토큰이 필요 없는 경우 undefined로 들간다.
         client.defaults.headers.common["Authorization"] = `${accessToken}`;
-
-        const result = await client.get("/api/auth/profile");
-
-        setAuthInfo({ isLoggedIn: true, userInfo: result.data.data });
+        const result = await client.get("/auth/profile");
+        //전역 상태관리
+        setAuthInfo({ isLoggedIn: true, authInfo: result.data.data });
+        //home으로 이동
         history.push("/");
+        toast.dark("🚀로그인 완료 !");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error.response.status);
       if (error.response.status === 400) {
-        setError("이메일 / 비밀번호를 확인해 주시기 바랍니다.");
+        setError("🔥올바른 값을 입력해주세요.");
+      } else if (error.response.status === 404) {
+        setError("🔥올바른 값을 입력해주세요.");
+      } else {
+        setError("서버 오류");
       }
     }
   };
@@ -61,7 +84,7 @@ function SignInForm() {
       type="login"
       onClickSubmit={onClickSubmit}
       form={form}
-      onChangeInput={onChangeInput}
+      onChagenInput={onChagenInput}
       error={error}
     />
   );

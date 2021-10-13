@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import palette from "../../libs/styles/palette";
 import ButtonComponent from "../common/ButtonComponent";
 
 const AuthFormBlock = styled.div`
-  box-sizing: border-box;
   h3 {
     margin: 0;
     color: ${palette.gray[8]};
@@ -53,6 +52,12 @@ const ErrorMessage = styled.div`
   text-align: center;
   font-size: 0.875rem;
   margin-top: 1rem;
+  padding: 0.2rem;
+  background-color: red;
+  border: 1px solid transparent;
+  display: block;
+  color: white;
+  border-radius: 0.3rem;
 `;
 
 const textMap = {
@@ -60,8 +65,15 @@ const textMap = {
   register: "회원가입",
 };
 
-const AuthForm = ({ type, form, onChangeInput, onClickSubmit, error }) => {
+const AuthForm = ({ type, form, onChagenInput, onClickSubmit, error }) => {
   const text = textMap[type];
+  // ref를 위한 변수 선언
+  const emailRef = useRef("");
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, [emailRef]);
+
   return (
     <AuthFormBlock>
       <h3>{text}</h3>
@@ -70,8 +82,9 @@ const AuthForm = ({ type, form, onChangeInput, onClickSubmit, error }) => {
           autoComplete="email"
           name="email"
           placeholder="이메일"
-          onChange={onChangeInput}
+          onChange={onChagenInput}
           value={form.email}
+          ref={emailRef}
         />
         {type === "register" && (
           <StyledInput
@@ -79,7 +92,7 @@ const AuthForm = ({ type, form, onChangeInput, onClickSubmit, error }) => {
             name="nickName"
             placeholder="닉네임"
             value={form.nickName}
-            onChange={onChangeInput}
+            onChange={onChagenInput}
           />
         )}
         <StyledInput
@@ -87,7 +100,7 @@ const AuthForm = ({ type, form, onChangeInput, onClickSubmit, error }) => {
           placeholder="비밀번호"
           type="password"
           value={form.password}
-          onChange={onChangeInput}
+          onChange={onChagenInput}
         />
         {type === "register" && (
           <StyledInput
@@ -96,7 +109,7 @@ const AuthForm = ({ type, form, onChangeInput, onClickSubmit, error }) => {
             placeholder="비밀번호 확인"
             type="password"
             value={form.passwordConfirm}
-            onChange={onChangeInput}
+            onChange={onChagenInput}
           />
         )}
         {error && <ErrorMessage>{error}</ErrorMessage>}
