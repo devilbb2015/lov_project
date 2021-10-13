@@ -29,12 +29,18 @@ const QuillWrapper = styled.div`
     font-size: 1.5rem;
     line-height: 1.5;
   }
-  .ql-editor.ql-blank:before {
+  /* .ql-editor.ql-blank:before {
     left: 0px;
-  }
+  } */
 `;
 
-function Editor({ onChangeField, body, title }) {
+function Editor({
+  // onChangeBody,
+  // onChangeTitle,
+  onChangeField,
+  body,
+  title,
+}) {
   const modules = {
     toolbar: [
       //[{ 'font': [] }],
@@ -70,7 +76,17 @@ function Editor({ onChangeField, body, title }) {
     "background",
   ];
 
+  // const onChangeBody = (body) => {
+  //   console.log("???");
+  //   onChangeField({ key: "body", value: body });
+  // };
+
+  // const onChangeTitle = (e) => {
+  //   onChangeField({ key: "title", value: e.target.value });
+  // };
+
   const onChangeBody = (body) => {
+    console.log("???");
     onChangeField({ key: "body", value: body });
   };
 
@@ -90,10 +106,12 @@ function Editor({ onChangeField, body, title }) {
           theme="snow"
           modules={modules}
           formats={formats}
-          value={body || ""}
-          onChange={(content, delta, source, editor) =>
-            onChangeBody(editor.getHTML())
-          }
+          value={body}
+          onChange={(content, delta, source, editor) => {
+            if (source === "user") {
+              onChangeBody(editor.getHTML());
+            }
+          }}
         />
       </QuillWrapper>
     </EditorWrapper>

@@ -4,6 +4,8 @@ import ButtonComponent from "../common/ButtonComponent";
 import palette from "../../libs/styles/palette";
 import { BsPlusLg } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
+import { useContext } from "react";
+import PostContext from "../../context/PostContext";
 
 const StyledButton = styled(ButtonComponent)`
   width: 4rem;
@@ -13,7 +15,6 @@ const StyledButton = styled(ButtonComponent)`
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-
   &:hover {
     background-color: ${palette.cyan[4]};
   }
@@ -26,8 +27,18 @@ const StyledIcon = styled(BsPlusLg)`
 
 function WriteButton() {
   const history = useHistory();
+  const { postInfo, setPostInfo } = useContext(PostContext);
+
   return (
-    <StyledButton onClick={() => history.push("/write")}>
+    <StyledButton
+      onClick={() => {
+        setPostInfo({
+          ...postInfo,
+          originalPostId: "6162ad248b169692c62d526d",
+        });
+        history.push("/write");
+      }}
+    >
       <StyledIcon />
     </StyledButton>
   );

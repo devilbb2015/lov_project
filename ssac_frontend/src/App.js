@@ -4,7 +4,7 @@ import GlobalStyles from "./GlobalStyles";
 import HomePage from "./pages/HomePage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
-import WritePage from "./pages/WirtePage";
+import WritePage from "./pages/WritePage";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import client from "./libs/api/_client";
@@ -15,6 +15,7 @@ import AuthContext from "./context/AuthContext";
 import AddProfilePage from "./pages/AddProfilePage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import EditProfilePage from "./pages/EditProfilePage";
 
 function App() {
   // const dispatch = useDispatch();
@@ -51,9 +52,11 @@ function App() {
       <Route component={SignInPage} path="/signin" />
       <Route component={SignUpPage} path="/signup" />
       <Route component={AddProfilePage} path="/addprofile" />
+      <Route component={EditProfilePage} exact path="/edit/profile" />
+      <Route component={WritePage} exact path="/write" />
 
       {/* <Route component={RegisterPage} path="/register" /> */}
-      <Route component={WritePage} path="/write" />
+      {/* <Route component={WritePage} path="/write" /> */}
       {/* <Route component={PostPage} path="/@:username/:postId" /> */}
       <ToastContainer
         position="bottom-center"

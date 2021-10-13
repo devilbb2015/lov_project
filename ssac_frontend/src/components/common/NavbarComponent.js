@@ -92,29 +92,29 @@ const IconBlock = styled.div`
   /* width: 100%; */
 `;
 
-const SearchBlock = styled.div`
-  display: none;
-  position: relative;
-  margin-right: 1rem;
-`;
+// const SearchBlock = styled.div`
+//   //display: none;
+//   position: relative;
+//   margin-right: 1rem;
+// `;
 
-const SearchWrapper = styled.div`
-  border: 1px solid #000;
-  padding: 0.2rem 0.5rem;
-  border-radius: 2rem;
-  display: flex;
-  align-items: center;
-  margin-right: 1rem;
-`;
+// const SearchWrapper = styled.div`
+//   border: 1px solid #000;
+//   padding: 0.2rem 0.5rem;
+//   border-radius: 2rem;
+//   display: flex;
+//   align-items: center;
+//   margin-right: 1rem;
+// `;
 
-const SearchInput = styled.input`
-  flex: 1;
-  border: none;
-  width: 13rem;
-  &:focus {
-    outline: none;
-  }
-`;
+// const SearchInput = styled.input`
+//   flex: 1;
+//   border: none;
+//   width: 13rem;
+//   &:focus {
+//     outline: none;
+//   }
+// `;
 
 const IconWrapper = styled.div`
   font-size: 2.5rem;
@@ -126,28 +126,28 @@ const IconWrapper = styled.div`
   }
 `;
 
-const SearchResultBlock = styled.div`
-  width: 100%;
-  height: 15rem;
-  position: absolute;
-  top: 3.5rem;
-  box-shadow: 0 0.4rem 0.8rem 0 rgba(0, 0, 0, 0.2);
-  border: 1px solid #dedede;
-  background: #fff;
-`;
+// const SearchResultBlock = styled.div`
+//   width: 100%;
+//   height: 15rem;
+//   position: absolute;
+//   top: 3.5rem;
+//   box-shadow: 0 0.4rem 0.8rem 0 rgba(0, 0, 0, 0.2);
+//   border: 1px solid #dedede;
+//   background: #fff;
+// `;
 
-const SearchResultWrapper = styled.div`
-  padding: 1rem;
-  cursor: pointer;
-  & + & {
-    border-top: 1px solid #dedede;
-  }
-`;
+// const SearchResultWrapper = styled.div`
+//   padding: 1rem;
+//   cursor: pointer;
+//   & + & {
+//     border-top: 1px solid #dedede;
+//   }
+// `;
 
-const SearchResult = styled.div`
-  font-size: 1.3rem;
-  font-weight: normal;
-`;
+// const SearchResult = styled.div`
+//   font-size: 1.3rem;
+//   font-weight: normal;
+// `;
 
 const ProfileText = styled.div`
   text-decoration: none;
@@ -205,6 +205,7 @@ function NavbarComponent({
   onClickProfileImg,
   visible,
   onClickLogout,
+  onClickEditProfile,
 }) {
   console.log("visible", visible);
   return (
@@ -216,28 +217,15 @@ function NavbarComponent({
               <StyledLogo src={MainLogo} alt="logo" />
             </StyledLogoWrapper>
           </div>
-          <SearchBox />
           {authInfo && authInfo.isLoggedIn ? (
             <IconBlock>
-              <SearchBlock>
-                <SearchWrapper>
-                  <SearchInput type="text" name="search" />
-                  <IconWrapper>
-                    <AiOutlineSearch />
-                  </IconWrapper>
-                  <SearchResultBlock>
-                    <SearchResultWrapper>
-                      <SearchResult></SearchResult>
-                    </SearchResultWrapper>
-                  </SearchResultBlock>
-                </SearchWrapper>
-              </SearchBlock>
-              <ProfileText>
+              <SearchBox />
+              {/* <ProfileText>
                 <span style={{ fontWeight: "bolder" }}>
                   {authInfo.authInfo.nickName}
                 </span>{" "}
                 님 환영합니다
-              </ProfileText>
+              </ProfileText> */}
               <IconWrapper className="iconWrapper">
                 <AiOutlineComment />
               </IconWrapper>
@@ -250,7 +238,9 @@ function NavbarComponent({
                 </ProfileImageWrap>
                 {visible && (
                   <ProfileBoard>
-                    <ProfileItem>회원 정보 변경</ProfileItem>
+                    <ProfileItem onClick={onClickEditProfile}>
+                      회원 정보 변경
+                    </ProfileItem>
                     <ProfileItem onClick={onClickLogout}>로그아웃</ProfileItem>
                   </ProfileBoard>
                 )}

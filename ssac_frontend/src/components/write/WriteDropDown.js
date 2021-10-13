@@ -10,11 +10,9 @@ const StyledDropDown = styled(DropDown)`
   .DropDown_Control {
     font-size: 1.3rem !important;
   }
-
   .DropDown_Menu {
     font-size: 1.3rem !important;
   }
-
   .DropDown_Arrow {
     top: 11px !important;
   }

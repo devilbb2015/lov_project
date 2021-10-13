@@ -7,7 +7,6 @@ import PostContext from "../../context/PostContext";
 const TagBoxContainer = () => {
   const { postInfo, setPostInfo } = useContext(PostContext);
   const tags = postInfo.tags;
-
   const onChangeTags = (nextTags) => {
     setPostInfo({
       ...postInfo,
