@@ -13,7 +13,7 @@ const commentController = {
           .json({ message: "데이터가 없습니다." });
       }
       res.status(code.OK).json({
-        message: "댓글 전체조회 성공",
+        message: "게시물 전체조회 성공",
         data: result,
       });
     } catch (error) {

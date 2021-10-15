@@ -43,44 +43,99 @@ const EditInput = styled.input`
   }
 `;
 
-function EditProfile({ onClickAvatar }) {
+function EditProfile({
+  onClickAvatar,
+  profileImg,
+  onChangeDropDown,
+  onChangeCalender,
+}) {
+  const ageOptions = [
+    { value: "영유아", label: "영유아", key: "age" },
+    { value: "10대", label: "10대", key: "age" },
+    { value: "20대", label: "20대", key: "age" },
+    { value: "30대", label: "30대", key: "age" },
+    { value: "40대", label: "40대", key: "age" },
+    { value: "50대", label: "50대", key: "age" },
+    { value: "60대", label: "60대", key: "age" },
+    { value: "70대", label: "70대", key: "age" },
+    { value: "80대", label: "80대", key: "age" },
+    { value: "90대", label: "90대", key: "age" },
+  ];
+
+  const genderOptions = [
+    { value: "male", label: "남자", key: "gender" },
+    { value: "female", label: "여자", key: "gender" },
+  ];
+
+  const vaccineOptions = [
+    { value: "모더나", label: "모더나", key: "type" },
+    { value: "화이자", label: "화이자", key: "type" },
+    { value: "아스트라제네카", label: "아스트라제네카", key: "type" },
+    { value: "얀센", label: "얀센", key: "type" },
+    { value: "기타", label: "기타", key: "type" },
+  ];
+
+  const degreeOptions = [
+    { value: 0, label: "접종 안함", key: "degree" },
+    { value: 1, label: "1차", key: "degree" },
+    { value: 2, label: "2차", key: "degree" },
+  ];
   return (
     <EditProfileWrap>
       <EditItemBlock>
         <EditLabelWrap>
           <BoldLabel>프로필 이미지 선택</BoldLabel>
         </EditLabelWrap>
-        <EditAvatar onClickAvatar={onClickAvatar} />
+        <EditAvatar
+          imgURL={profileImg.imgBase64}
+          onClickAvatar={onClickAvatar}
+        />
       </EditItemBlock>
       <EditItemBlock>
         <EditLabelWrap>
-          <BoldLabel>나이 입력하세요</BoldLabel>
+          <BoldLabel>나이 선택</BoldLabel>
         </EditLabelWrap>
-        <EditInput type="number" />
+        <StyledDropDown
+          onChangeDropDown={onChangeDropDown}
+          options={ageOptions}
+          myPlaceholder={"나이를 선택 해주세요."}
+        />
       </EditItemBlock>
       <EditItemBlock>
         <EditLabelWrap>
           <BoldLabel>성별 선택</BoldLabel>
         </EditLabelWrap>
-        <StyledDropDown myPlaceholder={"성별을 선택 해주세요."} />
+        <StyledDropDown
+          onChangeDropDown={onChangeDropDown}
+          options={genderOptions}
+          myPlaceholder={"성별을 선택 해주세요."}
+        />
       </EditItemBlock>
       <EditItemBlock>
         <EditLabelWrap>
           <BoldLabel>백신 선택</BoldLabel>
         </EditLabelWrap>
-        <StyledDropDown myPlaceholder={"백신을 선택 해주세요."} />
+        <StyledDropDown
+          options={vaccineOptions}
+          onChangeDropDown={onChangeDropDown}
+          myPlaceholder={"백신을 선택 해주세요."}
+        />
       </EditItemBlock>
       <EditItemBlock>
         <EditLabelWrap>
           <BoldLabel>차수 선택</BoldLabel>
         </EditLabelWrap>
-        <StyledDropDown myPlaceholder={"차수를 선택 해주세요."} />
+        <StyledDropDown
+          options={degreeOptions}
+          onChangeDropDown={onChangeDropDown}
+          myPlaceholder={"차수를 선택 해주세요."}
+        />
       </EditItemBlock>
       <EditItemBlock>
         <EditLabelWrap>
           <BoldLabel>백신 접종 날짜 선택</BoldLabel>
         </EditLabelWrap>
-        <Calendar onChange={null} value={new Date()} />
+        <Calendar onChange={onChangeCalender} value={new Date()} />
       </EditItemBlock>
     </EditProfileWrap>
   );

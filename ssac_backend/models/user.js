@@ -1,19 +1,22 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
+// 스키마,모델 작성
 const userSchema = new Schema({
-  email: { type: String, required: true, unique: true },
-  nickName: { type: String, required: true, unique: true },
+  email: { type: String, unique: true, required: true, trim: true },
+  nickName: { type: String, unique: true, required: true },
   password: { type: String, required: true },
-  type: { type: String, default: null }, // 타입
-  age: { type: Number, default: null }, // 나이
-  gender: { type: String, enum: ["male", "female"], default: "male" }, // 성별
-  degree: { type: Number, default: "0" }, // 온도
-  inoDate: { type: Date, default: null }, // 백신일
-  verified: { type: Boolean, default: "false" }, // 추가정보 입력 유무
-  profileImage: { type: String, default: null }, // 프로필 이미지
+  type: { type: String, default: null },
+  age: { type: String, default: null },
+  gender: { type: String, enum: ["male", "female"], default: "male" },
+  degree: { type: Number, default: 0 },
+  inoDate: { type: Date, default: null },
+  verified: { type: Boolean, default: false },
+  profileImage: { type: String, default: null },
+  // googleId: { type: String, unique: true },
+  // naverId: { type: String, unique: true },
 });
 
 // Pre - 몽구스의 middleware기능이다
@@ -31,6 +34,7 @@ userSchema.pre("save", function (next) {
 
       bcrypt.hash(user.password, salt, function (err, hash) {
         if (err) return next(err);
+        console.log(err);
         // password를 hash암호로 교체
         user.password = hash;
         next();
@@ -41,7 +45,7 @@ userSchema.pre("save", function (next) {
   }
 });
 
-// 암호화 비밀번호 유효성 체크
+// 암호화 비밀번호 일치 체크
 userSchema.methods.comparePassword = function (plainPassword, cb) {
   // plainPassword를 암호화 후 db와 확인
   bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
@@ -53,4 +57,5 @@ userSchema.methods.comparePassword = function (plainPassword, cb) {
   });
 };
 
-module.exports = mongoose.model("user", userSchema);
+// 모듈화
+module.exports = mongoose.model("User", userSchema);

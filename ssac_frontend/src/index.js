@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { applyMiddleware, createStore } from "redux";
 import rootReducer, { rootSaga } from "./modules/index";
@@ -11,7 +10,10 @@ import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import AuthProvider from "./context/providers/AuthProvider";
 import { createBrowserHistory } from "history";
-import PostProvider from "./context/providers/PostProvider";
+import PostsProvider from "./context/providers/PostsProvider";
+import ChatUserProvider from "./context/providers/chat/ChatUserProvider";
+import ChatRoomProvider from "./context/providers/chat/ChatRoomProvider";
+import ProfileProvider from "./context/providers/ProfileProvider";
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
@@ -29,19 +31,20 @@ export const history = createBrowserHistory();
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter history={history}>
-      <PostProvider>
-        <AuthProvider>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </AuthProvider>
-      </PostProvider>
+      <ChatRoomProvider>
+        <ChatUserProvider>
+          <ProfileProvider>
+            <PostsProvider>
+              <AuthProvider>
+                <Provider store={store}>
+                  <App />
+                </Provider>
+              </AuthProvider>
+            </PostsProvider>
+          </ProfileProvider>
+        </ChatUserProvider>
+      </ChatRoomProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

@@ -7,10 +7,10 @@ import ButtonComponent from "./ButtonComponent";
 import SearchBox from "./search/SearchBox";
 import ProfileAvatar from "../../assets/global/profile.png";
 import {
-  AiOutlineSearch,
+  // AiOutlineSearch,
   AiOutlineBell,
   AiOutlineComment,
-  AiOutlineMenu,
+  // AiOutlineMenu,
 } from "react-icons/ai";
 
 const NavbarWrap = styled.div`

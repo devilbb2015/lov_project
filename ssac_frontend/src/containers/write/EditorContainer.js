@@ -1,13 +1,11 @@
-import React from "react";
-import { useEffect } from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import Editor from "../../components/write/Editor";
-import PostContext from "../../context/PostContext";
-import client from "../../libs/api/_client";
+import PostsContext from "../../context/PostsContext";
 
 function EditorContainer() {
-  const { postInfo, setPostInfo } = useContext(PostContext);
-  const { title, body } = postInfo;
+  const { postInfo, setPostInfo } = useContext(PostsContext);
+  const { title, content } = postInfo;
+  // tag, title, content, category
   const onChangeField = (payload) => {
     const { key, value } = payload;
     setPostInfo({
@@ -34,14 +32,7 @@ function EditorContainer() {
   // }, []);
 
   return (
-    <Editor
-      postInfo={postInfo}
-      title={title}
-      body={body}
-      // onChangeBody={onChangeBody}
-      // onChangeTitle={onChangeTitle}
-      onChangeField={onChangeField}
-    />
+    <Editor title={title} content={content} onChangeField={onChangeField} />
   );
 }
 

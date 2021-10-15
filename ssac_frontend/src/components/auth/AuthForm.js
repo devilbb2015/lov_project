@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import palette from "../../libs/styles/palette";
 import ButtonComponent from "../common/ButtonComponent";
 
@@ -11,6 +10,7 @@ const AuthFormBlock = styled.div`
     margin-bottom: 2rem;
     font-size: 1.5rem;
     font-weight: bolder;
+    box-sizing: border-box;
   }
 `;
 
@@ -31,17 +31,17 @@ const StyledInput = styled.input`
   }
 `;
 
-const Footer = styled.div`
-  margin-top: 2rem;
-  text-align: right;
-  a {
-    color: ${palette.gray[6]};
-    text-decoration: underline;
-    &:hover {
-      color: ${palette.gray[9]};
-    }
-  }
-`;
+// const Footer = styled.div`
+//   margin-top: 2rem;
+//   text-align: right;
+//   a {
+//     color: ${palette.gray[6]};
+//     text-decoration: underline;
+//     &:hover {
+//       color: ${palette.gray[9]};
+//     }
+//   }
+// `;
 
 const ButtonWithMarginTop = styled(ButtonComponent)`
   margin-top: 2rem;

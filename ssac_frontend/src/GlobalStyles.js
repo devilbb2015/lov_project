@@ -29,34 +29,34 @@ const GlobalStyles = createGlobalStyle`
 }
   html {
     font-size: 16px;
-    
     -ms-user-select: none; 
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
     -khtml-user-select: none;
+    min-height: 100vh;
+    
     /* user-select: none; */
   };
+  body{
+    font-family: Y_Spotlight;
+    line-height: 1.5;
+  }
   em {
     /* font-weight: bolder;
     color: orange */
     font-style: italic;
   };
+  a{
+    text-decoration:none;
+  }
   strong {
     font-weight: bolder
   };
-  *{
-    user-select: none;
+  *, *::before, *::after {
+    box-sizing: border-box;
     font-family: Y_Spotlight;
   }
-  .toast-info {
-    background-color: rgba(33,33,33,0.8) !important;
-  }
-  .toast-warning {
-    background-color: rgba(242,82,24,0.8) !important;
-  }
-  .toast-success {
-    background-color: rgba(51,113,246,0.8) !important;
-  }
+  
 `;
 
 export default GlobalStyles;

@@ -5,17 +5,12 @@ import NavbarComponent from "../../components/common/NavbarComponent";
 import AuthContext from "../../context/AuthContext";
 import client from "../../libs/api/_client";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function NavbarContainer() {
   const history = useHistory();
   const { authInfo, setAuthInfo } = useContext(AuthContext);
   const [visible, setVisible] = useState(false);
-
-  const [searchState, setSearchState] = useState(false);
-  const [searchInfo, setSearchInfo] = useState({
-    search: "",
-  });
-  const [searchData, setSearchData] = useState([]);
 
   const onClickProfileImg = () => {
     setVisible(!visible);
@@ -25,6 +20,13 @@ function NavbarContainer() {
     history.push("/edit/profile");
     setVisible(false);
   };
+
+  // ========================================  elasticsearch 관련 ===============
+  const [searchState, setSearchState] = useState(false);
+  const [searchInfo, setSearchInfo] = useState({
+    search: "",
+  });
+  const [searchData, setSearchData] = useState([]);
 
   useEffect(() => {
     if (searchInfo.search.length > 0) {
@@ -76,14 +78,16 @@ function NavbarContainer() {
 
   const onClickSearch = () => {};
 
+  // ========================================  elasticsearch 관련 ===============
+
   const onClickLogout = () => {
     localStorage.removeItem("accessToken");
+
     client.defaults.headers.common["Authorization"] = ``;
-    setAuthInfo({
-      ...authInfo,
-      isLoggedIn: false,
-    });
+    setAuthInfo({ ...authInfo, isLoggedIn: false });
+    toast.dark("🚀로그아웃 완료 !");
     history.push("/");
+    setVisible(false);
   };
 
   console.log(authInfo);

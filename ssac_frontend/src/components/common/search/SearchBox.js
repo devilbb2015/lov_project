@@ -74,7 +74,7 @@ function SearchBox(
         <NavSearchInput
           name="search"
           value={searchInfo.search}
-          onChange={onChangeInput}
+          // onChange={onChangeInput}
         />
         <NavStyledIcon>
           <AiOutlineSearch />

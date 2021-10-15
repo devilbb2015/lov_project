@@ -2,7 +2,6 @@ import React, { useCallback } from "react";
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
-import { ToastsStore } from "react-toasts";
 import AuthForm from "../../components/auth/AuthForm";
 import client from "../../libs/api/_client";
 
@@ -28,7 +27,6 @@ function SignUpForm() {
           setError("");
         }
       }
-
       setForm({
         ...form,
         [name]: value,
@@ -39,6 +37,12 @@ function SignUpForm() {
 
   const onClickSubmit = async (e) => {
     e.preventDefault();
+    if (form.password !== form.passwordConfirm) {
+      return setError("🔥패스워드가 일치하지 않습니다.");
+    }
+
+    console.log("error", error);
+
     try {
       const response = await client.post("/auth/signup", {
         email: form.email,
@@ -58,6 +62,7 @@ function SignUpForm() {
       } else if (error.response.status === 404) {
         setError("경로 오류");
       } else {
+        console.log(error);
         setError("🔥올바른 값을 입력해주세요.");
       }
     }

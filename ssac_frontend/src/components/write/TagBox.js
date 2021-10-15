@@ -6,7 +6,6 @@ const TagBoxWrapper = styled.div`
   width: 100%;
   border-top: 1px solid ${palette.gray[2]};
   padding-top: 2rem;
-
   h4 {
     font-size: 1.5rem;
     font-weight: bolder;
@@ -28,12 +27,10 @@ const TagForm = styled.form`
     border: none;
     font-size: 1.2rem;
   }
-
   input {
     padding: 0.5rem;
     flex: 1;
   }
-
   button {
     cursor: pointer;
     padding-right: 1rem;
@@ -70,9 +67,8 @@ const TagItem = React.memo(({ tag, onRemove }) => (
 
 const TagList = React.memo(({ tags, onRemove }) => (
   <TagListBlock>
-    {tags.map((tag) => (
-      <TagItem key={tag} tag={tag} onRemove={onRemove} />
-    ))}
+    {false &&
+      tags.map((tag) => <TagItem key={tag} tag={tag} onRemove={onRemove} />)}
   </TagListBlock>
 ));
 

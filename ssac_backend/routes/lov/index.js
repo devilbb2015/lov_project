@@ -1,9 +1,8 @@
-var express = require("express");
-var router = express.Router();
-
-const authRouter = require("./auth/index");
-const postRouter = require("./post/index");
-const commentRouter = require("./comment/index");
+const express = require("express");
+const router = express.Router();
+const authRouter = require("../lov/auth/index");
+const postRouter = require("../lov/post/index");
+const commentRouter = require("../lov/comment/index");
 const searchRouter = require("./search/index");
 
 router.use("/auth", authRouter);
